@@ -1,0 +1,12 @@
+powertab <- read.table("household_power_consumption.txt", header = TRUE, sep = ";", na.strings = c("?"))
+Sys.setlocale("LC_TIME", "C")
+powertab$Time <- paste(powertab$Date, powertab$Time)
+powertab$Time <- strptime(powertab$Time, "%d/%m/%Y %H:%M:%S")
+powertab$Date <- as.Date(powertab$Date, "%d/%m/%Y")
+newdata <- powertab[powertab$Date==as.Date("2007-02-01")|powertab$Date==as.Date("2007-02-02"), ]
+attach(newdata)
+plot(Time, Global_active_power, col="white", xlab="", ylab="Global Active Power (kilowatts)")
+lines(Time, Global_active_power)
+dev.copy(png, file="plot2.png", width = 480, height = 480)
+dev.off()
+detach(newdata)
